@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "451974562363",
+    "project_id": "firebook2020",
+    "storage_bucket": "firebook2020.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:451974562363:android:9723a6c6cdecc1df71921e",
+        "android_client_info": {
+          "package_name": "com.cdcompany.firebook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "451974562363-4n7o94ek9bpie1c3n5dfb8f3t9erhc22.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfgOJEmdEHc87AWHF5e7pNLWV6wv3-jS8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "451974562363-4n7o94ek9bpie1c3n5dfb8f3t9erhc22.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
