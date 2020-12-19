@@ -58,6 +58,7 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
 //            dateController.addTodo()
+            AddTodoDialogFragment().show(supportFragmentManager, AddTodoDialogFragment.TAG)
             dateController.addTodoTest(testNumber++)
 
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
