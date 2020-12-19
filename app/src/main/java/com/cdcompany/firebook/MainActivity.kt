@@ -18,11 +18,14 @@ import kotlinx.android.synthetic.main.fragment_first.*
 class MainActivity : AppCompatActivity() {
 
     private var testNumber: Int = 1
-    private lateinit var dateController : DataController
-    private lateinit var recyclerView : RecyclerView;
-    
+    private lateinit var dateController: DataController
+    private lateinit var recyclerView: RecyclerView;
+    private lateinit var todoMap: MutableMap<String, Todo>
+
     interface DataCallback {
-        fun onDataReady(todo : Todo?)
+        fun onTodoAdded(key: String, todo: Todo)
+        fun onTodoDeleted(key: String)
+
     }
 
 
@@ -31,23 +34,32 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 //        setSupportActionBar(findViewById(R.id.toolbar))
 
-        val todo : Todo = Todo("hi", 1, true)
-        val todo2 : Todo = Todo("helloooo", 0, true)
-        val todoList : MutableList<Todo> = mutableListOf(todo, todo2)
+//        val todo : Todo = Todo("hi", 1, true)
+//        val todo2 : Todo = Todo("helloooo", 0, true)
+        val todoList: MutableList<Todo> = mutableListOf()
+        todoMap = mutableMapOf()
         recyclerView = findViewById(R.id.recyclerview)
         recyclerview.layoutManager = LinearLayoutManager(applicationContext)
         recyclerView.adapter = TodoRecyclerViewAdapter(todoList)
         dateController = DataController(object : DataCallback {
-            override fun onDataReady(todo: Todo?) {
-                Log.d("Derick", "is this called?")
-                todo?.let { todoList.add(it) }
+            override fun onTodoAdded(key: String, todo: Todo) {
+                todoList.add(todo)
+                todoMap.putIfAbsent(key, todo)
                 (recyclerView.adapter as TodoRecyclerViewAdapter).notifyDataSetChanged()
+            }
+
+            override fun onTodoDeleted(key: String) {
+                todoList.remove(todoMap.remove(key))
+                (recyclerView.adapter as TodoRecyclerViewAdapter).notifyDataSetChanged()
+
             }
         })
 
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
-            dateController.addTodo()
+//            dateController.addTodo()
+            dateController.addTodoTest(testNumber++)
+
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                    .setAction("Action", null).show()
         }

@@ -21,9 +21,11 @@ class DataController(private val dataCallback: MainActivity.DataCallback){
         databaseReference.push()
             .setValue(Todo("derick happy", 100, true))
     }
-//    fun readTodo() : List<Todo> {
-//        databaseReference
-//    }
+
+    fun addTodoTest(num : Int) {
+        databaseReference.push()
+            .setValue(Todo(num.toString(), 100, true))
+    }
     fun attachListener(){
         childEventListener = object : ChildEventListener {
             /**
@@ -69,7 +71,11 @@ class DataController(private val dataCallback: MainActivity.DataCallback){
              */
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val todo : Todo? = snapshot.getValue<Todo>()
-                dataCallback.onDataReady(todo)
+                val key : String? = snapshot.key                
+                if (key != null  && todo != null) {
+                    dataCallback.onTodoAdded(key, todo)
+                }
+                
             }
 
             /**
@@ -79,7 +85,10 @@ class DataController(private val dataCallback: MainActivity.DataCallback){
              * @param snapshot An immutable snapshot of the data at the child that was removed.
              */
             override fun onChildRemoved(snapshot: DataSnapshot) {
-                TODO("Not yet implemented")
+                val key = snapshot.key
+                if (key != null) {
+                    dataCallback.onTodoDeleted(key)
+                }
             }
 
         }
