@@ -7,11 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_first.*
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class FirstFragment : Fragment() {
+    
+    private lateinit var recyclerView : RecyclerView;
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -24,8 +29,15 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<Button>(R.id.button_first).setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
-        }
+        val todo : Todo = Todo("hi", 1, true)
+        val todo2 : Todo = Todo("helloooo", 0, true)
+        val todoList : List<Todo> = listOf(todo, todo2)
+        recyclerView = view.findViewById(R.id.recyclerview)
+        recyclerview.layoutManager = LinearLayoutManager(view.context)
+        recyclerView.adapter = TodoRecyclerViewAdapter(todoList)    
+
+//        view.findViewById<Button>(R.id.button_first).setOnClickListener {
+//            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+//        }
     }
 }
