@@ -12,13 +12,13 @@ class DataController(private val dataCallback: MainActivity.DataCallback){
     private lateinit var databaseReference: DatabaseReference
     private lateinit var childEventListener: ChildEventListener
     init {
-        databaseReference = Firebase.database.reference
+        databaseReference = Firebase.database.reference.child("test")
         attachListener()
         databaseReference.addChildEventListener(childEventListener)        
 
     }
     fun addTodo() {
-        databaseReference.child("test").push()
+        databaseReference.push()
             .setValue(Todo("derick happy", 100, true))
     }
 //    fun readTodo() : List<Todo> {
