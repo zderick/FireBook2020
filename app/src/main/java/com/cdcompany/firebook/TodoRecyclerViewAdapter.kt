@@ -1,10 +1,10 @@
 package com.cdcompany.firebook
 
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.CheckBox
 import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
 
@@ -14,6 +14,7 @@ class TodoRecyclerViewAdapter(
 ) : RecyclerView.Adapter<TodoRecyclerViewAdapter.TodoViewHolder>() {
     class TodoViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val description: MyEditText = view.findViewById(R.id.description)
+        val completed : CheckBox = view.findViewById(R.id.checkbox)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
@@ -29,9 +30,25 @@ class TodoRecyclerViewAdapter(
     override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
         val todo: Todo = todoList[position]
         val editText: MyEditText = holder.description
+        val completedBox: CheckBox = holder.completed
         editText.setText(todo.description)
+        completedBox.isChecked = todo.complete
         attachOnFocusChangeListener(editText, todo)
         attachOnEditActionListener(editText, todo)
+        attachBackPressedListener(editText, todo)
+        attachCompletedListener(completedBox, todo)
+    }
+
+    private fun attachCompletedListener(checkBox: CheckBox, todo : Todo) {
+        checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked != todo.complete) {
+                dataController.updateComplete(todo, isChecked)
+                checkBox.setOnCheckedChangeListener(null)
+            }
+        }
+    }
+
+    private fun attachBackPressedListener(editText: MyEditText, todo: Todo) {
         editText.setBackKeyListener {
             editText.clearFocus()
             editText.setText(todo.description)

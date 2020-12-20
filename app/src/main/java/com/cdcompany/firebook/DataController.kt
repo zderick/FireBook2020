@@ -39,6 +39,10 @@ class DataController(private val dataCallback: MainActivity.DataCallback) {
         databaseReference.child(todo.key).setValue(todo)
     }
 
+    fun updateComplete(todo: Todo, completed : Boolean) {
+        databaseReference.child(todo.key).setValue( Todo(todo.key, todo.description, todo.time, completed))
+    }
+
     fun attachListener() {
         childEventListener = object : ChildEventListener {
             /**
