@@ -12,7 +12,6 @@ import kotlinx.android.synthetic.main.fragment_first.*
 
 class MainActivity : AppCompatActivity() {
 
-    private var testNumber: Int = 1
     private lateinit var dateController: DataController
     private lateinit var recyclerView: RecyclerView;
     private lateinit var todoMap: MutableMap<String, Todo>
@@ -45,6 +44,7 @@ class MainActivity : AppCompatActivity() {
                 todoList.add(todo)
                 todoMap.putIfAbsent(key, todo)
                 (recyclerView.adapter as TodoRecyclerViewAdapter).notifyDataSetChanged()
+                recyclerView.scrollToPosition(todoList.size - 1)
             }
 
             override fun onTodoDeleted(key: String) {
@@ -59,7 +59,6 @@ class MainActivity : AppCompatActivity() {
 //            dateController.addTodo()
             dialogFragment = AddTodoDialogFragment()
             dialogFragment.show(supportFragmentManager, AddTodoDialogFragment.TAG)
-            dateController.addTodoTest(testNumber++)
 
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                    .setAction("Action", null).show()

@@ -24,16 +24,7 @@ class DataController(private val dataCallback: MainActivity.DataCallback){
         databaseReference.push()
             .setValue(Todo(todo, clock.millis(), false /* isCompleted */))
     }
-
-    fun addTodoTest(num : Int) {
-        databaseReference.push()
-            .setValue(Todo(num.toString(), 100, true))
-    }
-
-    fun addTodoTestString(todo : String) {
-        databaseReference.push()
-            .setValue(Todo(todo, 100, true))
-    }
+    
     fun attachListener(){
         childEventListener = object : ChildEventListener {
             /**
