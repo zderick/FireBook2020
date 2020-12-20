@@ -71,7 +71,11 @@ class DataController(private val dataCallback: MainActivity.DataCallback) {
              * be null for the first child node of a location.
              */
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-//                TODO("Not yet implemented")
+                val todo: Todo? = snapshot.getValue<Todo>()
+                val key: String? = snapshot.key
+                if (key != null && todo != null) {
+                    dataCallback.onTodoChanged(key, todo)
+                }
             }
 
             /**

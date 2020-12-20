@@ -32,13 +32,10 @@ class TodoRecyclerViewAdapter(
         editText.setText(todo.description)
         attachOnFocusChangeListener(editText, todo)
         attachOnEditActionListener(editText, todo)
-        editText.setBackKeyListener(object : MyEditText.BackKeyListener {
-            override fun onBackPressed() {
-                editText.clearFocus()
-                editText.setText(todo.description)
-            }
-
-        })
+        editText.setBackKeyListener {
+            editText.clearFocus()
+            editText.setText(todo.description)
+        }
     }
 
     private fun attachOnFocusChangeListener(editText: EditText, todo: Todo) {
@@ -60,19 +57,4 @@ class TodoRecyclerViewAdapter(
             false
         }
     }
-        
-//        editText.setOnKeyListener { _, keyCode, event ->
-//            
-//
-//            }
-//        }
-//        EditText.setOnKeyListener({ v, keyCode, event ->
-//            if (event.getAction() === android.view.KeyEvent.ACTION_DOWN) {
-//                when (keyCode) {
-//                    KeyEvent.KEYCODE_BACK -> getPresenter().onBackPressed()
-//                }
-//            }
-//            false
-//        })
-//    }
 }

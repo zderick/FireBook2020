@@ -15,10 +15,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var dateController: DataController
     private lateinit var recyclerView: RecyclerView
     private lateinit var todoMap: MutableMap<String, Todo>
-    private lateinit var dialogFragment : AddTodoDialogFragment
+    private lateinit var dialogFragment: AddTodoDialogFragment
 
     interface DataCallback {
         fun onTodoAdded(key: String, todo: Todo)
+        fun onTodoChanged(key: String, todo: Todo)
         fun onTodoDeleted(key: String)
     }
 
@@ -35,11 +36,27 @@ class MainActivity : AppCompatActivity() {
         layoutManager.stackFromEnd = true
         dateController = DataController(object : DataCallback {
             override fun onTodoAdded(key: String, todo: Todo) {
-                todo.key = key
-                todoList.add(todo)
-                todoMap.putIfAbsent(key, todo)
+                if (!todo.complete) {
+                    todoList.add(todo)
+                    todoMap.putIfAbsent(key, todo)
+                    (recyclerView.adapter as TodoRecyclerViewAdapter).notifyDataSetChanged()
+                    recyclerView.scrollToPosition(todoList.size - 1)                    
+                }
+            }
+
+            override fun onTodoChanged(key: String, todo: Todo) {
+                val myTodo : Todo? = todoMap[key]
+                todoMap[key]?.description = todo.description
+
+                if (todoMap[key]?.complete != todo.complete) {
+                    if (todo.complete) {
+                        todoList.remove(todoMap[key])
+                    } else {
+                        todoList.add(todo)
+                    }
+                    todoMap[key]?.complete = todo.complete
+                }
                 (recyclerView.adapter as TodoRecyclerViewAdapter).notifyDataSetChanged()
-                recyclerView.scrollToPosition(todoList.size - 1)
             }
 
             override fun onTodoDeleted(key: String) {
