@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.android.synthetic.main.fragment_first.*
+import kotlinx.android.synthetic.main.todo_fragment_layout.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -28,9 +28,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 //        setSupportActionBar(findViewById(R.id.toolbar))
-
-//        val todo : Todo = Todo("hi", 1, true)
-//        val todo2 : Todo = Todo("helloooo", 0, true)
         val todoList: MutableList<Todo> = mutableListOf()
         todoMap = mutableMapOf()
         recyclerView = findViewById(R.id.recyclerview)
@@ -56,12 +53,9 @@ class MainActivity : AppCompatActivity() {
 
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
-//            dateController.addTodo()
             dialogFragment = AddTodoDialogFragment()
             dialogFragment.show(supportFragmentManager, AddTodoDialogFragment.TAG)
 
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                    .setAction("Action", null).show()
         }
     }
 

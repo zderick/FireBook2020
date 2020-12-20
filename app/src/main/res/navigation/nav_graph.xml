@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.cdcompany.firebook.FirstFragment"
+        android:name="com.cdcompany.firebook.TodoFragment"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        tools:layout="@layout/todo_fragment_layout">
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"

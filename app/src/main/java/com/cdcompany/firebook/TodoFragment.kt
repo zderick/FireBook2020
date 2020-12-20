@@ -5,16 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_first.*
+import kotlinx.android.synthetic.main.todo_fragment_layout.*
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class FirstFragment : Fragment() {
+class TodoFragment : Fragment() {
     
     private lateinit var recyclerView : RecyclerView;
 
@@ -23,21 +21,14 @@ class FirstFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_first, container, false)
+        return inflater.inflate(R.layout.todo_fragment_layout, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val todo : Todo = Todo("hi", 1, true)
-        val todo2 : Todo = Todo("helloooo", 0, true)
-        val todoList : List<Todo> = listOf(todo, todo2)
+        val todoList : List<Todo> = listOf()
         recyclerView = view.findViewById(R.id.recyclerview)
         recyclerview.layoutManager = LinearLayoutManager(view.context)
-        recyclerView.adapter = TodoRecyclerViewAdapter(todoList)    
-
-//        view.findViewById<Button>(R.id.button_first).setOnClickListener {
-//            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
-//        }
+        recyclerView.adapter = TodoRecyclerViewAdapter(todoList)
     }
 }

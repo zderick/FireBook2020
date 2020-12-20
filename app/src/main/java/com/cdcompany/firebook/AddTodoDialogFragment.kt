@@ -22,20 +22,7 @@ class AddTodoDialogFragment : DialogFragment(), DialogInterface.OnClickListener 
         val TAG : String = "AddTodoDialogFragment"
     }
     
-    private lateinit var cancelButton : Button
-    private lateinit var okButton : Button
-
     private lateinit var editText: EditText
-
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-//        return layoutInflater.inflate(R.layout.add_todo_dialog, container, false)
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         editText = EditText(activity)
@@ -58,11 +45,9 @@ class AddTodoDialogFragment : DialogFragment(), DialogInterface.OnClickListener 
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//                TODO("Not yet implemented")
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//                TODO("Not yet implemented")
             }
 
         })
@@ -81,17 +66,7 @@ class AddTodoDialogFragment : DialogFragment(), DialogInterface.OnClickListener 
         
         return alertDialog
     }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-//        cancelButton = view.findViewById(R.id.cancel_button)
-//        cancelButton.setOnClickListener { dismiss() }
-//
-//        okButton = view.findViewById(R.id.ok_button)
-//        okButton.setOnClickListener { dismiss() }
-
-    }
-
+    
     override fun onClick(p0: DialogInterface?, p1: Int) {
         passBackTodo()
     }
@@ -99,9 +74,8 @@ class AddTodoDialogFragment : DialogFragment(), DialogInterface.OnClickListener 
     private fun passBackTodo() {
         val todoString = editText.text.toString()
         if (!TextUtils.isEmpty(todoString)) {
-            // TODO: add to database
             val callingActivity = activity as MainActivity
-            callingActivity.onTodoAddedText(todoString);
+            callingActivity.onTodoAddedText(todoString)
         }
     }
 }
