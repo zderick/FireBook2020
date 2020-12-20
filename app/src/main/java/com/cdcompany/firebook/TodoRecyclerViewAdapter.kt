@@ -1,15 +1,21 @@
 package com.cdcompany.firebook
 
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.EditText
 import android.widget.TextView
+import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
 
 class TodoRecyclerViewAdapter(private val todoList : List<Todo>) : RecyclerView.Adapter<TodoRecyclerViewAdapter.TodoViewHolder>() {
     class TodoViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val description: TextView = view.findViewById(R.id.description)
+        val description: EditText = view.findViewById(R.id.description)
     }
     /**
      * Called when RecyclerView needs a new [ViewHolder] of the given type to represent
@@ -70,6 +76,40 @@ class TodoRecyclerViewAdapter(private val todoList : List<Todo>) : RecyclerView.
      */
     override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
         val todo : Todo = todoList[position]
-        holder.description.text = todo.description
+        holder.description.setText(todo.description)
+        holder.description.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+//                TODO("Not yet implemented")
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//                TODO("Not yet implemented")
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        
+        })
+        holder.description.setOnEditorActionListener(object : TextView.OnEditorActionListener{
+            override fun onEditorAction(p0: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+               if (actionId == EditorInfo.IME_ACTION_DONE) {
+                   holder.description.clearFocus()
+                   return true                   
+               }
+                return false
+            }
+        })
+        holder.description.setOnKeyListener(object : View.OnKeyListener {
+            override fun onKey(p0: View?, keyCode: Int, keyEvent: KeyEvent?): Boolean {
+                Log.d("Derick", "H2")
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                    holder.description.clearFocus()
+                    return true
+                }
+                return false
+            }
+
+        })
+        
     }
 }

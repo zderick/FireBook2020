@@ -5,14 +5,17 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputType
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 
 
@@ -26,17 +29,32 @@ class AddTodoDialogFragment : DialogFragment(), DialogInterface.OnClickListener 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         editText = EditText(activity)
+        editText.imeOptions = EditorInfo.IME_ACTION_DONE
+        editText.inputType = InputType.TYPE_CLASS_TEXT
+
+        editText.setOnEditorActionListener(object : TextView.OnEditorActionListener{
+            override fun onEditorAction(p0: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    editText.clearFocus()
+                    passBackTodo()
+                    dismiss()
+                    return true
+                }
+                return false
+            }
+        })
 
         val alertDialog : AlertDialog =  AlertDialog.Builder(activity)
-            .setTitle("Add Todo")
-            .setMessage("Please Enter Your Todo")
-            .setPositiveButton("OK", this)
-            .setNegativeButton("CANCEL", null)
+            .setTitle(R.string.add_todo_dialog_title)
+            .setPositiveButton(R.string.add_todo_dialog_ok_text, this)
+            .setNegativeButton(R.string.add_todo_dialog_cancel_text, null)
             .setView(editText)
             .create()
 
         alertDialog.show()
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
+
+        editText.hint = getString(R.string.add_todo_dialog_hint_text)
         
         editText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
