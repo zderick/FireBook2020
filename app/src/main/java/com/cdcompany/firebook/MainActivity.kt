@@ -35,7 +35,10 @@ class MainActivity : AppCompatActivity() {
         val todoList: MutableList<Todo> = mutableListOf()
         todoMap = mutableMapOf()
         recyclerView = findViewById(R.id.recyclerview)
-        recyclerview.layoutManager = LinearLayoutManager(applicationContext)
+        val layoutManager = LinearLayoutManager(applicationContext)
+        recyclerview.layoutManager = layoutManager
+        layoutManager.reverseLayout = true
+        layoutManager.stackFromEnd = true
         recyclerView.adapter = TodoRecyclerViewAdapter(todoList)
         dateController = DataController(object : DataCallback {
             override fun onTodoAdded(key: String, todo: Todo) {
