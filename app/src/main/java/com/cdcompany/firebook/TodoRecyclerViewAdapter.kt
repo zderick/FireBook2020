@@ -13,7 +13,7 @@ class TodoRecyclerViewAdapter(
     private val dataController: DataController
 ) : RecyclerView.Adapter<TodoRecyclerViewAdapter.TodoViewHolder>() {
     class TodoViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val description: EditText = view.findViewById(R.id.description)
+        val description: MyEditText = view.findViewById(R.id.description)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
@@ -28,10 +28,17 @@ class TodoRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
         val todo: Todo = todoList[position]
-        val editText: EditText = holder.description
+        val editText: MyEditText = holder.description
         editText.setText(todo.description)
         attachOnFocusChangeListener(editText, todo)
         attachOnEditActionListener(editText, todo)
+        editText.setBackKeyListener(object : MyEditText.BackKeyListener {
+            override fun onBackPressed() {
+                editText.clearFocus()
+                editText.setText(todo.description)
+            }
+
+        })
     }
 
     private fun attachOnFocusChangeListener(editText: EditText, todo: Todo) {
