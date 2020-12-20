@@ -13,16 +13,14 @@ import kotlinx.android.synthetic.main.todo_fragment_layout.*
 class MainActivity : AppCompatActivity() {
 
     private lateinit var dateController: DataController
-    private lateinit var recyclerView: RecyclerView;
+    private lateinit var recyclerView: RecyclerView
     private lateinit var todoMap: MutableMap<String, Todo>
     private lateinit var dialogFragment : AddTodoDialogFragment
 
     interface DataCallback {
         fun onTodoAdded(key: String, todo: Todo)
         fun onTodoDeleted(key: String)
-
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,9 +33,9 @@ class MainActivity : AppCompatActivity() {
         recyclerview.layoutManager = layoutManager
         layoutManager.reverseLayout = true
         layoutManager.stackFromEnd = true
-        recyclerView.adapter = TodoRecyclerViewAdapter(todoList)
         dateController = DataController(object : DataCallback {
             override fun onTodoAdded(key: String, todo: Todo) {
+                todo.key = key
                 todoList.add(todo)
                 todoMap.putIfAbsent(key, todo)
                 (recyclerView.adapter as TodoRecyclerViewAdapter).notifyDataSetChanged()
@@ -50,6 +48,9 @@ class MainActivity : AppCompatActivity() {
 
             }
         })
+
+        recyclerView.adapter = TodoRecyclerViewAdapter(todoList, dateController)
+
 
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->

@@ -9,10 +9,12 @@ import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import java.time.Clock
 
-class DataController(private val dataCallback: MainActivity.DataCallback){
+class DataController(private val dataCallback: MainActivity.DataCallback) {
     private lateinit var databaseReference: DatabaseReference
     private lateinit var childEventListener: ChildEventListener
-    private lateinit var clock : Clock
+    private lateinit var clock: Clock
+    private val TEMP_KEY: String = ""
+
     init {
         databaseReference = Firebase.database.reference.child("test")
         attachListener()
@@ -20,12 +22,24 @@ class DataController(private val dataCallback: MainActivity.DataCallback){
         clock = Clock.systemUTC()
 
     }
-    fun addTodo(todo : String) {
-        databaseReference.push()
-            .setValue(Todo(todo, clock.millis(), false /* isCompleted */))
+
+    fun addTodo(todo: String) {
+
+        val key: String = databaseReference.push().key ?: TEMP_KEY
+
+        if (key != TEMP_KEY) {
+            databaseReference.child(key)
+                .setValue(Todo(key, todo, clock.millis(), false /* isCompleted */))
+        }
+
+
     }
-    
-    fun attachListener(){
+
+    fun updateTodo(todo: Todo) {
+        databaseReference.child(todo.key).setValue(todo)
+    }
+
+    fun attachListener() {
         childEventListener = object : ChildEventListener {
             /**
              * This method will be triggered in the event that this listener either failed at the server, or
@@ -69,12 +83,12 @@ class DataController(private val dataCallback: MainActivity.DataCallback){
              * will be null for the first child node of a location.
              */
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                val todo : Todo? = snapshot.getValue<Todo>()
-                val key : String? = snapshot.key                
-                if (key != null  && todo != null) {
+                val todo: Todo? = snapshot.getValue<Todo>()
+                val key: String? = snapshot.key
+                if (key != null && todo != null) {
                     dataCallback.onTodoAdded(key, todo)
                 }
-                
+
             }
 
             /**
@@ -89,8 +103,7 @@ class DataController(private val dataCallback: MainActivity.DataCallback){
                     dataCallback.onTodoDeleted(key)
                 }
             }
-
         }
     }
-
 }
+
