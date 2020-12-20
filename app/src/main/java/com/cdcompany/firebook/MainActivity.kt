@@ -1,17 +1,12 @@
 package com.cdcompany.firebook
 
 import android.os.Bundle
-import android.util.Log
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_first.*
 
 
@@ -21,6 +16,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var dateController: DataController
     private lateinit var recyclerView: RecyclerView;
     private lateinit var todoMap: MutableMap<String, Todo>
+    private lateinit var dialogFragment : AddTodoDialogFragment
 
     interface DataCallback {
         fun onTodoAdded(key: String, todo: Todo)
@@ -58,7 +54,8 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
 //            dateController.addTodo()
-            AddTodoDialogFragment().show(supportFragmentManager, AddTodoDialogFragment.TAG)
+            dialogFragment = AddTodoDialogFragment()
+            dialogFragment.show(supportFragmentManager, AddTodoDialogFragment.TAG)
             dateController.addTodoTest(testNumber++)
 
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -80,5 +77,10 @@ class MainActivity : AppCompatActivity() {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    fun onTodoAddedText(todoText: String) {
+        dateController.addTodo(todoText)
+        // TODO add your implementation.
     }
 }

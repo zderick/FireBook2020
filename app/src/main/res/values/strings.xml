@@ -11,4 +11,7 @@
     <string name="book_emoji">📙</string>
     <string name="books_emoji">📙📙📙📙📙📙📙📙📙📙📙📙📙📙📙</string>
 
+    <string name="add_todo_dialog_title">Adding Todo</string>
+
+
 </resources>

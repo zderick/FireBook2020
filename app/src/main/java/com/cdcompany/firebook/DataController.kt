@@ -7,24 +7,32 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
+import java.time.Clock
 
 class DataController(private val dataCallback: MainActivity.DataCallback){
     private lateinit var databaseReference: DatabaseReference
     private lateinit var childEventListener: ChildEventListener
+    private lateinit var clock : Clock
     init {
         databaseReference = Firebase.database.reference.child("test")
         attachListener()
-        databaseReference.addChildEventListener(childEventListener)        
+        databaseReference.addChildEventListener(childEventListener)
+        clock = Clock.systemUTC()
 
     }
-    fun addTodo() {
+    fun addTodo(todo : String) {
         databaseReference.push()
-            .setValue(Todo("derick happy", 100, true))
+            .setValue(Todo(todo, clock.millis(), false /* isCompleted */))
     }
 
     fun addTodoTest(num : Int) {
         databaseReference.push()
             .setValue(Todo(num.toString(), 100, true))
+    }
+
+    fun addTodoTestString(todo : String) {
+        databaseReference.push()
+            .setValue(Todo(todo, 100, true))
     }
     fun attachListener(){
         childEventListener = object : ChildEventListener {
@@ -36,7 +44,7 @@ class DataController(private val dataCallback: MainActivity.DataCallback){
              * @param error A description of the error that occurred
              */
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+//                TODO("Not yet implemented")
             }
 
             /**
@@ -47,7 +55,7 @@ class DataController(private val dataCallback: MainActivity.DataCallback){
              * location. This will be null if this location is ordered first.
              */
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-                TODO("Not yet implemented")
+//                TODO("Not yet implemented")
             }
 
             /**
@@ -58,7 +66,7 @@ class DataController(private val dataCallback: MainActivity.DataCallback){
              * be null for the first child node of a location.
              */
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                TODO("Not yet implemented")
+//                TODO("Not yet implemented")
             }
 
             /**
