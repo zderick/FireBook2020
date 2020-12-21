@@ -12,7 +12,7 @@
         app:layout_constraintEnd_toStartOf="@id/description"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <com.cdcompany.firebook.MyEditText
+    <com.cdcompany.firebook.CustomEditText
         android:id="@+id/description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

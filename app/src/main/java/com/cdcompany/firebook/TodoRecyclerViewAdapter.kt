@@ -13,7 +13,7 @@ class TodoRecyclerViewAdapter(
     private val dataController: DataController
 ) : RecyclerView.Adapter<TodoRecyclerViewAdapter.TodoViewHolder>() {
     class TodoViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val description: MyEditText = view.findViewById(R.id.description)
+        val description: CustomEditText = view.findViewById(R.id.description)
         val completed : CheckBox = view.findViewById(R.id.checkbox)
     }
 
@@ -29,7 +29,7 @@ class TodoRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
         val todo: Todo = todoList[position]
-        val editText: MyEditText = holder.description
+        val editText: CustomEditText = holder.description
         val completedBox: CheckBox = holder.completed
         editText.setText(todo.description)
         completedBox.isChecked = todo.complete
@@ -48,11 +48,13 @@ class TodoRecyclerViewAdapter(
         }
     }
 
-    private fun attachBackPressedListener(editText: MyEditText, todo: Todo) {
-        editText.setBackKeyListener {
-            editText.clearFocus()
-            editText.setText(todo.description)
-        }
+    private fun attachBackPressedListener(editText: CustomEditText, todo: Todo) {
+        editText.setBackKeyListener(object : CustomEditText.BackKeyListener {
+            override fun onBackPressed() {
+                editText.clearFocus()
+                editText.setText(todo.description)
+            }
+        })
     }
 
     private fun attachOnFocusChangeListener(editText: EditText, todo: Todo) {
