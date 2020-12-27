@@ -1,9 +1,6 @@
 package com.cdcompany.firebook
 
-import com.google.firebase.database.ChildEventListener
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
@@ -17,10 +14,10 @@ class DataController(private val dataCallback: MainActivity.DataCallback) {
 
     init {
         databaseReference = Firebase.database.reference.child("test")
-        attachListener()
-        databaseReference.addChildEventListener(childEventListener)
+        val query = databaseReference.orderByChild("time")
+        initializeChildEventListener()
+        query.addChildEventListener(childEventListener)
         clock = Clock.systemUTC()
-
     }
 
     fun addTodo(todo: String) {
@@ -31,8 +28,6 @@ class DataController(private val dataCallback: MainActivity.DataCallback) {
             databaseReference.child(key)
                 .setValue(Todo(key, todo, clock.millis(), false /* isCompleted */))
         }
-
-
     }
 
     fun updateTodo(todo: Todo) {
@@ -43,7 +38,7 @@ class DataController(private val dataCallback: MainActivity.DataCallback) {
         databaseReference.child(todo.key).setValue( Todo(todo.key, todo.description, todo.time, completed))
     }
 
-    fun attachListener() {
+    fun initializeChildEventListener() {
         childEventListener = object : ChildEventListener {
             /**
              * This method will be triggered in the event that this listener either failed at the server, or
@@ -96,7 +91,6 @@ class DataController(private val dataCallback: MainActivity.DataCallback) {
                 if (key != null && todo != null) {
                     dataCallback.onTodoAdded(key, todo)
                 }
-
             }
 
             /**
