@@ -1,6 +1,7 @@
 package com.cdcompany.firebook
 
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
@@ -8,12 +9,18 @@ import android.widget.CheckBox
 import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
 
+
 class TodoRecyclerViewAdapter(
     private val todoList: List<Todo>,
     private val dataController: DataController
 ) : RecyclerView.Adapter<TodoRecyclerViewAdapter.TodoViewHolder>() {
     class TodoViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val description: CustomEditText = view.findViewById(R.id.description)
+//        fun onTouch(v: View, event: MotionEvent?): Boolean {
+//            // Disallow the touch request for parent scroll on touch of child view
+//            v.parent.requestDisallowInterceptTouchEvent(true)
+//            return false
+//        }
         val completed : CheckBox = view.findViewById(R.id.checkbox)
     }
 
@@ -31,6 +38,12 @@ class TodoRecyclerViewAdapter(
         val todo: Todo = todoList[position]
         val editText: CustomEditText = holder.description
         val completedBox: CheckBox = holder.completed
+        editText.setOnTouchListener(object : View.OnTouchListener {
+            override fun onTouch(v: View, event: MotionEvent?): Boolean {
+                v.parent.requestDisallowInterceptTouchEvent(true)
+                return false
+            }
+        })
         editText.setText(todo.description)
         completedBox.isChecked = todo.complete
         attachOnFocusChangeListener(editText, todo)

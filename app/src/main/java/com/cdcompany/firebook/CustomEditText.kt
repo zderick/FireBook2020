@@ -3,7 +3,9 @@ package com.cdcompany.firebook
 import android.content.Context
 import android.util.AttributeSet
 import android.view.KeyEvent
-import android.view.KeyEvent.*
+import android.view.KeyEvent.ACTION_UP
+import android.view.KeyEvent.KEYCODE_BACK
+import android.view.MotionEvent
 import androidx.appcompat.widget.AppCompatEditText
 
 
@@ -28,5 +30,6 @@ class CustomEditText : AppCompatEditText {
     }
     fun setBackKeyListener(backKeyListener: BackKeyListener) {
         this.backKeyListener = backKeyListener
-    }}
+    }
+}
 
