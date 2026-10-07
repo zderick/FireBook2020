@@ -47,8 +47,31 @@ class TodoRecyclerViewAdapter(
     private fun attachCompletedListener(checkBox: CheckBox, todo : Todo) {
         checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked != todo.complete) {
-                dataController.updateComplete(todo, isChecked)
-                checkBox.setOnCheckedChangeListener(null)
+                if (isChecked) {
+                    // Ask confirmation before completing
+                    androidx.appcompat.app.AlertDialog.Builder(buttonView.context)
+                        .setTitle("Complete Todo?")
+                        .setMessage("Are you sure you want to complete \"${todo.description}\"?")
+                        .setPositiveButton("Complete") { _, _ ->
+                            dataController.updateComplete(todo, true)
+                            checkBox.setOnCheckedChangeListener(null)
+                        }
+                        .setNegativeButton("Cancel") { _, _ ->
+                            // Revert checkbox state without re-triggering listener
+                            checkBox.setOnCheckedChangeListener(null)
+                            checkBox.isChecked = false
+                            attachCompletedListener(checkBox, todo)
+                        }
+                        .setOnCancelListener {
+                            checkBox.setOnCheckedChangeListener(null)
+                            checkBox.isChecked = false
+                            attachCompletedListener(checkBox, todo)
+                        }
+                        .show()
+                } else {
+                    dataController.updateComplete(todo, false)
+                    checkBox.setOnCheckedChangeListener(null)
+                }
             }
         }
     }
