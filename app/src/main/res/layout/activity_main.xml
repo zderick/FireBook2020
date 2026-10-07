@@ -51,6 +51,13 @@
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@android:drawable/ic_input_add" />
 
+    <FrameLayout
+        android:id="@+id/animationOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="false"
+        android:focusable="false" />
+
 <!--    <include layout="@layout/content_main" />-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

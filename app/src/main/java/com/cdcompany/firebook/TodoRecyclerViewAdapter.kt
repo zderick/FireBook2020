@@ -13,7 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 class TodoRecyclerViewAdapter(
     private val todoList: List<Todo>,
-    private val dataController: DataController
+    private val dataController: DataController,
+    private val onCompleted: (() -> Unit)? = null
 ) : RecyclerView.Adapter<TodoRecyclerViewAdapter.TodoViewHolder>() {
     class TodoViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val description: CustomEditText = view.findViewById(R.id.description)
@@ -54,6 +55,7 @@ class TodoRecyclerViewAdapter(
                         .setMessage("Are you sure you want to complete \"${todo.description}\"?")
                         .setPositiveButton("Complete") { _, _ ->
                             dataController.updateComplete(todo, true)
+                            onCompleted?.invoke()
                             checkBox.setOnCheckedChangeListener(null)
                         }
                         .setNegativeButton("Cancel") { _, _ ->
